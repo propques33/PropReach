@@ -146,4 +146,4 @@ def generate_image(insta_handle, post_idea):
     return img_io
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
