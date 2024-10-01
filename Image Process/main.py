@@ -1,5 +1,6 @@
 import os
 from PIL import Image, ExifTags
+import argparse
 
 def correct_image_orientation(image):
     """Corrects image orientation based on EXIF data."""
@@ -53,8 +54,21 @@ def process_images(image_folder):
         img_resized.save(os.path.join(image_folder, new_image_name))
         print(f"Processed {image_file} and saved as {new_image_name}")
 
-# Set your folder path
-image_folder = 'C:/Users/HARI OM/Desktop/image process/images/Cubispace'
 
-# Call the function
-process_images(image_folder)
+if __name__ == "__main__":
+    # Use argparse to handle command-line arguments
+    parser = argparse.ArgumentParser(description="Process images in a folder.")
+    parser.add_argument(
+        'image_folder',
+        type=str,
+        nargs='?',
+        default='images',
+        help='Path to the folder containing images to process. Default is "images".'
+    )
+    args = parser.parse_args()
+
+    # Get the image folder from command-line arguments
+    image_folder = args.image_folder
+
+    # Call the function
+    process_images(image_folder)
