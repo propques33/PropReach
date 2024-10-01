@@ -277,19 +277,19 @@
                         document.getElementById('output').style.display = 'block';
                         document.getElementById('output').innerText = JSON.stringify(result.generate_post_idea, null, 4);
 
-                        if (result.image_url) {
+                        if (result.image_base64) {
                             const img = document.createElement('img');
-                            img.src = result.image_url;
+                            img.src = `data:image/png;base64,${result.image_base64}`;
                             img.alt = 'Generated Instagram Post';
                             img.style.display = 'block';
                             document.getElementById('generated-image').appendChild(img);
 
-                            // Show download button with image URL
+                            // Show download button with base64-encoded image URL
                             const downloadBtn = document.getElementById('download-btn');
                             downloadBtn.style.display = 'block';
                             downloadBtn.onclick = () => {
                                 const link = document.createElement('a');
-                                link.href = result.image_url;
+                                link.href = img.src;
                                 link.download = 'generated-instagram-post.png';  // Specify download filename
                                 link.click();
                             };
@@ -304,7 +304,6 @@
                 });
             }, 1000);
         });
-
     </script>
 </body>
 

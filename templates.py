@@ -1,5 +1,3 @@
-# templates.py
-
 from PIL import Image, ImageDraw, ImageFont
 import random
 import os
@@ -16,6 +14,7 @@ def get_font(font_name, size):
         font_path = os.path.join(fonts_dir, font_name)
         font = ImageFont.truetype(font_path, size)
     except IOError:
+        print(f"Failed to load {font_name}, using default font.")
         font = ImageFont.load_default()
     return font
 

@@ -43,15 +43,18 @@ def execute_all():
     try:
         # Scrape website content (keep in memory)
         scraped_content = scrape_website_content(business_website)
+        print(f"Website content scraped successfully for {business_website}")
     except Exception as e:
         return jsonify({"error": "Failed to scrape the website.", "details": str(e)}), 500
 
     try:
         # Generate post idea (keep in memory)
         post_idea = generate_instagram_post(insta_handle, scraped_content, context)
+        print(f"Post idea generated successfully for {insta_handle}")
 
         # Generate the image using a random template (in memory)
         img_io = generate_image(insta_handle, post_idea)
+        print(f"Image generated successfully for {insta_handle}")
     except Exception as e:
         return jsonify({"error": "Failed to generate post idea or image.", "details": str(e)}), 500
 
@@ -128,13 +131,17 @@ def generate_image(insta_handle, post_idea):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     image_folder = os.path.join(current_dir, 'images')
     image_path = os.path.join(image_folder, image_filename)
-    print(f"Using image: {image_path}")
-
+    
+    # Check if the image exists
     if not os.path.exists(image_path):
+        print(f"Image {image_filename} not found in the images folder!")
         raise Exception(f"Image {image_filename} not found in the images folder!")
+    else:
+        print(f"Using image: {image_path}")
 
+    # Open and process the image
     image = Image.open(image_path)
-
+    
     # Use a random template to modify the image
     image = select_template(image, headline, insta_handle)
 
