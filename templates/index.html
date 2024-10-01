@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Post Idea Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff6ec4, #7873f5);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            overflow-x: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -80%;
+            left: -80%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 110, 196, 0.2), rgba(120, 115, 245, 0.3));
+            z-index: 0;
+            transform: rotate(20deg);
+        }
+
+        h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #000000;
+            z-index: 1;
+        }
+
+        p {
+            font-size: 18px;
+            color: #000000;
+            margin-bottom: 20px;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 8px;
+            display: block;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ff6ec4;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6ec4, #7873f5);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+        }
+
+        button i {
+            margin-left: 8px;
+        }
+
+        #output {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            color: #333;
+            text-align: left;
+            white-space: pre-wrap;
+            font-size: 15px;
+            line-height: 1.6;
+            display: none;
+            z-index: 1;
+            position: relative;
+        }
+
+        #generated-image img {
+            max-width: 100%;
+            margin-top: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .loading {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #ff6ec4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .graphics {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            z-index: 0;
+        }
+
+        .graphics img {
+            width: 300px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .graphics img {
+                width: 200px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            button {
+                font-size: 16px;
+            }
+
+            input[type="text"] {
+                font-size: 14px;
+            }
+        }
+
+        #download-btn {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #ff6ec4;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #download-btn:hover {
+            background-color: #7873f5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="graphics">
+            <img src="https://www.svgrepo.com/show/38297/rocket.svg" alt="Graphic">
+        </div>
+        <h2>Instagram Post Idea Generator</h2>
+        <p>Enter your Instagram handle, business website, and some context to generate a creative Instagram post idea!</p>
+        <form id="inputForm">
+            <label for="insta_handle">Instagram Handle</label>
+            <input type="text" id="insta_handle" name="insta_handle" placeholder="Enter your Instagram handle" required>
+
+            <label for="business_website">Business Website</label>
+            <input type="text" id="business_website" name="business_website" placeholder="Enter your business website URL" required>
+
+            <label for="context">Context</label>
+            <input type="text" id="context" name="context" placeholder="Enter the context for the post" required>
+
+            <button type="submit">Generate Post Idea <i class="fas fa-lightbulb"></i></button>
+        </form>
+
+        <div id="output"></div>
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+        <div id="generated-image"></div>
+        <button id="download-btn">Download Image</button>
+    </div>
+
+    <script>
+        document.getElementById('inputForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            let insta_handle = document.getElementById('insta_handle').value;
+            let business_website = document.getElementById('business_website').value;
+            let context = document.getElementById('context').value;
+
+            // Clear previous output
+            document.getElementById('output').style.display = 'none';
+            document.getElementById('output').innerText = '';
+            document.getElementById('generated-image').innerHTML = '';
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('download-btn').style.display = 'none';  // Hide download button initially
+
+            // Simulate network request to your backend
+            setTimeout(() => {
+                fetch('/execute_all', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ insta_handle, business_website, context })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    document.getElementById('loading').style.display = 'none';
+
+                    if (result.generate_post_idea) {
+                        document.getElementById('output').style.display = 'block';
+                        document.getElementById('output').innerText = JSON.stringify(result.generate_post_idea, null, 4);
+
+                        if (result.image_url) {
+                            const img = document.createElement('img');
+                            img.src = result.image_url;
+                            img.alt = 'Generated Instagram Post';
+                            img.style.display = 'block';
+                            document.getElementById('generated-image').appendChild(img);
+
+                            // Show download button with image URL
+                            const downloadBtn = document.getElementById('download-btn');
+                            downloadBtn.style.display = 'block';
+                            downloadBtn.onclick = () => {
+                                const link = document.createElement('a');
+                                link.href = result.image_url;
+                                link.download = 'generated-instagram-post.png';  // Specify download filename
+                                link.click();
+                            };
+                        }
+                    } else if (result.error) {
+                        document.getElementById('output').innerText = 'Error: ' + result.details;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('output').innerText = 'An error occurred. Please try again.';
+                });
+            }, 1000);
+        });
+
+    </script>
+</body>
+
+</html>

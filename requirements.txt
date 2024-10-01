@@ -1,0 +1,6 @@
+Flask
+Pillow
+google-generativeai
+beautifulsoup4
+requests
+python-dotenv
