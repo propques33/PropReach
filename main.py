@@ -40,6 +40,9 @@ def execute_all():
     if not insta_handle or not business_website:
         return jsonify({"error": "Instagram handle and business website are required!"}), 400
 
+    # Normalize and validate the website URL
+    business_website = normalize_website_url(business_website)
+
     try:
         # Scrape website content (keep in memory)
         scraped_content = scrape_website_content(business_website)
@@ -69,6 +72,22 @@ def execute_all():
         "generate_post_idea": f"{caption} {hashtags}",
         "image_base64": img_base64
     })
+
+# Normalize and validate website URL
+def normalize_website_url(url):
+    """Ensure the website URL is lower case, starts with https, and handles missing www."""
+    # Convert the URL to lower case
+    url = url.lower()
+
+    # Add https:// if it's not already there
+    if not url.startswith('http://') and not url.startswith('https://'):
+        url = 'https://' + url
+
+    # Add www. if the URL doesn't contain it
+    if not url.startswith('https://www.') and '://' in url and 'www.' not in url.split('://')[1]:
+        url = url.replace('https://', 'https://www.')
+
+    return url
 
 # Scrape website content
 def scrape_website_content(url):
@@ -153,4 +172,4 @@ def generate_image(insta_handle, post_idea):
     return img_io
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

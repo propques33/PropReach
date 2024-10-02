@@ -4,19 +4,20 @@ import os
 
 def get_font(font_name, size):
     """
-    Helper function to load a font. Tries to load the font from the local 'fonts' directory.
+    Helper function to load a font. Tries to load the font from the local 'Roboto' directory.
     If not found, falls back to default font.
     """
     try:
-        # Assume fonts are stored in a 'fonts' directory next to this script
+        # Assume fonts are stored in a 'Roboto' directory next to this script
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        fonts_dir = os.path.join(current_dir, 'fonts')
+        fonts_dir = os.path.join(current_dir, 'Roboto')  # Updated to point to 'Roboto' folder
         font_path = os.path.join(fonts_dir, font_name)
         font = ImageFont.truetype(font_path, size)
     except IOError:
         print(f"Failed to load {font_name}, using default font.")
         font = ImageFont.load_default()
     return font
+
 
 def template_1(image, headline, insta_handle):
     draw = ImageDraw.Draw(image)
